@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odigos-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odigos-node
+  template:
+    metadata:
+      labels:
+        app: odigos-node
+    spec:
+      containers:
+      - name: app
+        image: odigos-node:latest
+        ports:
+        - containerPort: 3333
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odigos-node
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: odigos-node
+  ports:
+  - port: 3333
+    targetPort: 3333
